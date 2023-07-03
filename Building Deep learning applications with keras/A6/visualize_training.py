@@ -3,14 +3,15 @@ import keras
 from keras.models import Sequential
 from keras.layers import *
 
-training_data_df = pd.read_csv("sales_data_training_scaled.csv")
+run_name="run 1 with 50 nodes"
+training_data_df = pd.read_csv("/workspaces/tyagisx/Building Deep learning applications with keras/A6/sales_data_training_scaled.csv")
 
 X = training_data_df.drop('total_earnings', axis=1).values
 Y = training_data_df[['total_earnings']].values
 
 # Define the model
 model = Sequential()
-model.add(Dense(50, input_dim=9, activation='relu', name='layer_1'))
+model.add(Dense(5, input_dim=9, activation='relu', name='layer_1'))
 model.add(Dense(100, activation='relu', name='layer_2'))
 model.add(Dense(50, activation='relu', name='layer_3'))
 model.add(Dense(1, activation='linear', name='output_layer'))
@@ -18,7 +19,7 @@ model.compile(loss='mean_squared_error', optimizer='adam')
 
 # Create a TensorBoard logger
 logger = keras.callbacks.TensorBoard(
-    log_dir='logs',
+    log_dir='logs/{}'.format(run_name),
     histogram_freq=5,
     write_graph=True
 )
@@ -34,7 +35,7 @@ model.fit(
 )
 
 # Load the separate test data set
-test_data_df = pd.read_csv("sales_data_test_scaled.csv")
+test_data_df = pd.read_csv("/workspaces/tyagisx/Building Deep learning applications with keras/A6/sales_data_test_scaled.csv")
 
 X_test = test_data_df.drop('total_earnings', axis=1).values
 Y_test = test_data_df[['total_earnings']].values

@@ -18,7 +18,7 @@ model.compile(loss='mean_squared_error', optimizer='adam')
 
 # Create a TensorBoard logger
 logger=keras.callbacks.TensorBoard(log_dir='logs',write_graph=True, histogram_freq=5)
-
+print("Log created")
 # Train the model
 model.fit(
     X,
