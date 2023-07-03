@@ -1,9 +1,9 @@
 import pandas as pd
 from keras.models import load_model
 
-model =
+model = load_model("trained_model.h5")
 
-X = pd.read_csv("proposed_new_product.csv").values
+X = pd.read_csv("/workspaces/tyagisx/Building Deep learning applications with keras/A4/proposed_new_product.csv").values
 prediction = model.predict(X)
 
 # Grab just the first element of the first prediction (since we only have one)

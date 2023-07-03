@@ -3,7 +3,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import *
 
-training_data_df = pd.read_csv("sales_data_training_scaled.csv")
+training_data_df = pd.read_csv("/workspaces/tyagisx/Building Deep learning applications with keras/A6/sales_data_training_scaled.csv")
 
 X = training_data_df.drop('total_earnings', axis=1).values
 Y = training_data_df[['total_earnings']].values
@@ -17,7 +17,7 @@ model.add(Dense(1, activation='linear', name='output_layer'))
 model.compile(loss='mean_squared_error', optimizer='adam')
 
 # Create a TensorBoard logger
-
+logger=keras.callbacks.TensorBoard(log_dir='logs',write_graph=True, histogram_freq=5)
 
 # Train the model
 model.fit(
@@ -25,11 +25,12 @@ model.fit(
     Y,
     epochs=50,
     shuffle=True,
-    verbose=2
+    verbose=2,
+    callbacks=[logger]
 )
 
 # Load the separate test data set
-test_data_df = pd.read_csv("sales_data_test_scaled.csv")
+test_data_df = pd.read_csv("/workspaces/tyagisx/Building Deep learning applications with keras/A6/sales_data_test_scaled.csv")
 
 X_test = test_data_df.drop('total_earnings', axis=1).values
 Y_test = test_data_df[['total_earnings']].values
