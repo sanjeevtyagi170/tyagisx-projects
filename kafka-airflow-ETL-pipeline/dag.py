@@ -41,13 +41,23 @@ extract_data_from_csv= BashOperator(
 # task extract tsv data
 extract_data_from_tsv= BashOperator(
     task_id='extract_data_from_tsv'
-    bash_command='cut -f 5,6,7 /home/project/airflow/dags/finalassignment/staging/tollplaza-data.tsv > /home/project/airflow/dags/finalassignment/staging/tsv_data.tsv'
+    bash_command='cut -f 5,6,7 /home/project/airflow/dags/finalassignment/staging/tollplaza-data.tsv > /home/project/airflow/dags/finalassignment/staging/tsv_data.csv'
     dag=dag
 )
 
 # task extract text data
 extract_data_from_fixed_width= BashOperator(
     task_id=' extract_data_from_fixed_width'
-    bash_command='cut -d ' ' -f 6,7 /home/project/airflow/dags/finalassignment/staging/payment-data.txt > /home/project/airflow/dags/finalassignment/staging/fixed_width_data.csv'
+    bash_command='cut -c 58-62,63-71 /home/project/airflow/dags/finalassignment/staging/payment-data.txt > /home/project/airflow/dags/finalassignment/staging/fixed_width_data.csv'
+    dag=dag
+)
+
+# task combine all data into one
+consolidate_data = BashOperator(
+    task_id='consolidate_data',
+    bash_command='paste /home/project/airflow/dags/finalassignment/staging/csv_data.csv \
+    /home/project/airflow/dags/finalassignment/staging/tsv_data.csv \
+    /home/project/airflow/dags/finalassignment/staging/fixed_width_data.csv \
+    > /home/project/airflow/dags/finalassignment/staging/extracted_data.csv',
     dag=dag
 )
