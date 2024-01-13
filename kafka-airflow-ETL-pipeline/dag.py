@@ -61,3 +61,6 @@ consolidate_data = BashOperator(
     > /home/project/airflow/dags/finalassignment/staging/extracted_data.csv',
     dag=dag
 )
+
+
+unzip_data>>extract_data_from_csv>>extract_data_from_tsv>>extract_data_from_fixed_width>>consolidate_data
