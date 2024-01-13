@@ -35,7 +35,7 @@ unzip_data = BashOperator(
 # task extract csv data
 extract_data_from_csv= BashOperator(
     task_id='extract_data_from_csv',
-    bash_command="cut -d ',' -f 1,2,3,4 /home/project/airflow/dags/finalassignment/staging/vehicle-data.csv > /home/project/airflow/dags/finalassignment/staging/csv_data.csv",
+    bash_command="cut -d ',' -f1-4 /home/project/airflow/dags/finalassignment/staging/vehicle-data.csv > /home/project/airflow/dags/finalassignment/staging/csv_data.csv",
     dag=dag
     )
 
@@ -56,12 +56,23 @@ extract_data_from_fixed_width = BashOperator(
 # task combine all data into one
 consolidate_data = BashOperator(
     task_id='consolidate_data',
-    bash_command='paste /home/project/airflow/dags/finalassignment/staging/csv_data.csv \
+    bash_command="paste -d ',' /home/project/airflow/dags/finalassignment/staging/csv_data.csv \
     /home/project/airflow/dags/finalassignment/staging/tsv_data.csv \
     /home/project/airflow/dags/finalassignment/staging/fixed_width_data.csv \
-    > /home/project/airflow/dags/finalassignment/staging/extracted_data.csv',
+    > /home/project/airflow/dags/finalassignment/staging/extracted_data.csv",
     dag=dag
 )
+
+# task combine all data into one
+transform_data = BashOperator(
+    task_id='transform_data',
+    bash_command="paste <(cut -d ',' -f 1-3 '/home/project/airflow/dags/finalassignment/staging/extracted_data.csv') \
+    <(cut -d ',' -f 4 '/home/project/airflow/dags/finalassignment/staging/extracted_data.csv' \
+    | tr '[:lower:]' '[:upper:]') <(cut -d ',' -f 5- '/home/project/airflow/dags/finalassignment/staging/extracted_data.csv') \
+    > /home/project/airflow/dags/finalassignment/staging/transformed_data.csv",
+    dag=dag
+)
+
 
 # task delete unnecessary files
 delete_files = BashOperator(
@@ -78,4 +89,4 @@ delete_files = BashOperator(
 )
 
 
-unzip_data>>extract_data_from_csv>>extract_data_from_tsv>>extract_data_from_fixed_width>>consolidate_data>>delete_files
+unzip_data>>extract_data_from_csv>>extract_data_from_tsv>>extract_data_from_fixed_width>>consolidate_data>>transform_data>>delete_files
