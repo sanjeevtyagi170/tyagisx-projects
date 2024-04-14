@@ -1,0 +1,121 @@
+{
+    "inhome": [
+        {
+            "column_name": "MAC",
+            "dq_rules": [
+                {
+                    "rule": "regex_match",
+                    "data": {
+                        "regex": "^[0-9]{2}:[0-9]{2}:[A-Z][0-9]:[0-9]{2}:[0-9]{2}:[0-9][A-Z]$"
+                    }
+                }
+            ]
+        },
+        {
+            "column_name": "STATIONTYPE",
+            "dq_rules": [
+                {
+                    "rule": "regex_not_match",
+                    "data": {
+                        "regex": "^[0-9]+$"
+                    }
+                }
+            ]
+        },
+        {
+            "column_name": "LATENCYAVERAGE",
+            "dq_rules": [
+                {
+                    "rule": "values_less_than",
+                    "data": {
+                        "max": 10
+                    }
+                }
+            ]
+        }
+    ],
+    "cablemodem": [
+        {
+            "column_name": "MAC_ADDR",
+            "dq_rules": [
+                {
+                    "rule": "values_to_not_be_in_set",
+                    "data": {
+                        "values": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "column_name": "METRICS_DATE",
+            "dq_rules": [
+                {
+                    "rule": "regex_not_match",
+                    "data": {
+                        "regex": "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}"
+                    }
+                }
+            ]
+        }
+    ],
+    "alarm": [
+        {
+            "column_name": "TIPO_NOTIF",
+            "dq_rules": [
+                {
+                    "rule": "value_length_to_be_equal_to",
+                    "data": {
+                        "value": 1
+                    }
+                }
+            ]
+        },
+        {
+            "column_name": "DATE_TIME_NOTIF",
+            "dq_rules": [
+                {
+                    "rule": "value_to_match_given_datetime_format",
+                    "data": {
+                        "format": "%Y-%m-%d %H:%M:%S"
+                    }
+                }
+            ]
+        }
+    ],
+    "breakdown": [
+        {
+            "column_name": "OBSERVATION",
+            "dq_rules": [
+                {
+                    "rule": "regex_not_match",
+                    "data": {
+                        "regex": "[^\\d.-]"
+                    }
+                },
+                {
+                    "rule": "values_to_not_be_in_set",
+                    "data": {
+                        "values": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "topology": [
+        {
+            "column_name": "COD_GR_ELEM",
+            "dq_rules": [
+                {
+                    "rule": "values_less_than_and_equal_to",
+                    "data": {
+                        "max": 12
+                    }
+                }
+            ]
+        }
+    ]
+}
