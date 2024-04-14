@@ -1,0 +1,11 @@
+﻿dataset_name,column_name,condition,rule_description,dq_flag
+inhome,MAC, (MAC RLIKE '^[0-9]{2}:[0-9]{2}:[A-Z][0-9]:[0-9]{2}:[0-9]{2}:[0-9][A-Z]$'),MAC should be in XX:XX:XX:XX:XX:XX format only,Enable
+inhome,STATIONTYPE, (STATIONTYPE NOT RLIKE '^[0-9]+$'),Station type should not be Numeric ,Enable
+inhome,LATENCYAVERAGE, (LATENCYAVERAGE < 10),Latency average should be <10 only,Enable
+cablemodem,MAC_ADDR, MAC_ADDR != '',MAC should not be NULL,Enable
+cablemodem,METRICS_DATE, (METRICS_DATE NOT RLIKE '^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}'),Should be in YYYY-MM-DD HH:MM:SS format only,Enable
+alarm,TIPO_NOTIF, LEN(TIPO_NOTIF) = 1,Alarm notification type should not be more than 1 character,Enable
+alarm,DATE_TIME_NOTIF, CAST(DATE_TIME_NOTIF AS TIMESTAMP) IS NOT NULL,Alarm notification datetime should not be NULL,Enable
+breakdown,OBSERVATION, (OBSERVATION NOT RLIKE '[^\d.-]'),Observation should not be Numeric,Enable
+breakdown,OBSERVATION, OBSERVATION != '',Observation should not be NULL,Enable
+topology,COD_GR_ELEM, LEN(COD_GR_ELEM) <= 12,Short name of designation should not be more than 12 characters,Enable
